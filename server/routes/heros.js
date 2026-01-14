@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const db = require("../utils/database");
+const upload = require("../middleware/uploadHeroImages");
 
 const router = Router();
 
@@ -52,18 +53,12 @@ router.get("/", async (req, res) => {
   try {
     const [[{ total }]] = await db.query("SELECT COUNT(*) as total FROM heros");
 
-    const [rows] = await db.query("SELECT * FROM heros LIMIT ? OFFSET ?", [
-      limit,
-      offset,
-    ]);
+    const [rows] = await db.query("SELECT FROM heros ", []);
 
     res.json({
       data: rows.map((hero) => ({
         ...hero,
-        superpowers: JSON.parse(hero.superpowers),
       })),
-      page,
-      totalPages: Math.ceil(total / limit),
     });
   } catch (err) {
     console.error(err);
@@ -76,22 +71,22 @@ router.get("/", async (req, res) => {
    GET /heros/:id
 ===================== */
 router.get("/:id", async (req, res) => {
-  try {
-    const [rows] = await db.query("SELECT * FROM heros WHERE id = ?", [
-      req.params.id,
-    ]);
+  const heroId = req.params.id;
 
-    if (!rows.length) {
-      return res.status(404).json({ message: "Hero not found" });
-    }
+  const [[hero]] = await db.query("SELECT * FROM heros WHERE id = ?", [heroId]);
 
-    const hero = rows[0];
-
-    res.json(hero);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to fetch hero" });
+  if (!hero) {
+    return res.status(404).json({ message: "Hero not found" });
   }
+
+  const [images] = await db.query(
+    "SELECT image FROM hero_images WHERE hero_id = ?",
+    [heroId]
+  );
+
+  hero.images = images.map((img) => img.image);
+
+  res.json(hero);
 });
 
 /* =====================
@@ -158,6 +153,35 @@ router.delete("/:id", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to delete hero" });
+  }
+});
+
+/**
+ * POST /heros/:id/images
+ */
+router.post("/:id/images", upload.array("images", 5), async (req, res) => {
+  try {
+    const heroId = req.params.id;
+
+    if (!req.files || req.files.length === 0) {
+      return res.status(400).json({ message: "No images uploaded" });
+    }
+
+    const values = req.files.map((file) => [
+      heroId,
+      `/uploads/heros/${file.filename}`,
+    ]);
+
+    await db.query("INSERT INTO hero_images (hero_id, image) VALUES ?", [
+      values,
+    ]);
+
+    res.json({
+      message: "Images uploaded successfully",
+      images: values.map((v) => v[1]),
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

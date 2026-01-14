@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const herosRoute = require("./routes/heros");
+const path = require("path");
 
 const app = express();
 
@@ -10,12 +11,10 @@ app.use(cors());
 app.use(express.json());
 
 // routes
-app.use("/heros", herosRoute);
 
-// health check (optional but useful)
-app.get("/", (_req, res) => {
-  res.send("API is running");
-});
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
+app.use("/heros", herosRoute);
 
 // start server
 app.listen(PORT, () => {

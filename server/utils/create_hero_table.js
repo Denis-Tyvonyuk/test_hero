@@ -9,7 +9,6 @@ async function createHerosTable() {
       origin_description TEXT NOT NULL,
       superpowers JSON NOT NULL,
       catch_phrase VARCHAR(255),
-      image_url VARCHAR(255),
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
   `;
