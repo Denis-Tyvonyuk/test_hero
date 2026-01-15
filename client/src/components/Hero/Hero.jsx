@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import AddImgToHero from "./AddImgToHero";
+import EditHeroForm from "./EditHeroForm";
+import DeleteHero from "./DeleteHero";
 
 const Hero = () => {
   const { id } = useParams();
@@ -62,6 +64,12 @@ const Hero = () => {
       </div>
       <div>
         <AddImgToHero id={id} />
+      </div>
+      <div>
+        <EditHeroForm id={id} hero={hero} />
+      </div>
+      <div>
+        <DeleteHero id={id} />
       </div>
     </div>
   );

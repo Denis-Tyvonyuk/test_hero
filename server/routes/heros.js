@@ -1,4 +1,4 @@
-const { Router } = require("express");
+const { Router, json } = require("express");
 const db = require("../utils/database");
 const upload = require("../middleware/uploadHeroImages");
 
@@ -118,6 +118,10 @@ router.get("/:id", async (req, res) => {
     [heroId]
   );
 
+  try {
+    hero.superpowers = JSON.parse(hero.superpowers);
+  } catch {}
+
   hero.images = images.map((img) => img.image);
 
   res.json(hero);
@@ -138,7 +142,7 @@ router.put("/:id", async (req, res) => {
         real_name = ?,
         origin_description = ?,
         superpowers = ?,
-        catch_phrase = ?,
+        catch_phrase = ?
       
        WHERE id = ?`,
       [
@@ -169,6 +173,10 @@ router.put("/:id", async (req, res) => {
 ===================== */
 router.delete("/:id", async (req, res) => {
   try {
+    await db.query("DELETE FROM hero_images WHERE hero_id = ?", [
+      req.params.id,
+    ]);
+
     const [result] = await db.query("DELETE FROM heros WHERE id = ?", [
       req.params.id,
     ]);

@@ -5,7 +5,8 @@ import { useNavigate } from "react-router-dom";
 const ITEMS_PER_PAGE = 5;
 
 const HeroList = () => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const savedPage = sessionStorage.getItem("page");
+  const [currentPage, setCurrentPage] = useState(savedPage ? savedPage : 1);
   const [heroes, setHeroes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -66,10 +67,10 @@ const HeroList = () => {
     <div className="listMain">
       <div className="hero_list">
         {/* HERO LIST */}
-        {heroes.map((hero) => (
+        {currentHeroes.map((hero, index) => (
           <div
             className="hero"
-            key={hero.nickname}
+            key={index}
             onClick={() => navigate(`/hero/${hero.id}`)}
           >
             <div>
