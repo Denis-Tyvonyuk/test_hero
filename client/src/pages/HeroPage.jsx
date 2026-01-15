@@ -1,10 +1,12 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import Hero from "../components/Hero/Hero";
 
 const HeroPage = () => {
-  const { nickname } = useParams();
-
-  return <div>{nickname}</div>;
+  return (
+    <div>
+      <Hero />
+    </div>
+  );
 };
 
 export default HeroPage;
