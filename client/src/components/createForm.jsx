@@ -65,56 +65,64 @@ const CreateHeroForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} style={{ maxWidth: 500 }}>
-      <h2>Create Hero</h2>
+    <div className="container">
+      <form onSubmit={handleSubmit} style={{ maxWidth: 500 }}>
+        <h2>Create Hero</h2>
+        <div className="createForm">
+          <input
+            name="nickname"
+            placeholder="Nickname"
+            value={form.nickname}
+            onChange={handleChange}
+            required
+          />
 
-      <input
-        name="nickname"
-        placeholder="Nickname"
-        value={form.nickname}
-        onChange={handleChange}
-        required
-      />
+          <input
+            name="real_name"
+            placeholder="Real name"
+            value={form.real_name}
+            onChange={handleChange}
+            required
+          />
 
-      <input
-        name="real_name"
-        placeholder="Real name"
-        value={form.real_name}
-        onChange={handleChange}
-        required
-      />
+          <textarea
+            name="origin_description"
+            placeholder="Origin description"
+            value={form.origin_description}
+            onChange={handleChange}
+            required
+          />
 
-      <textarea
-        name="origin_description"
-        placeholder="Origin description"
-        value={form.origin_description}
-        onChange={handleChange}
-        required
-      />
+          <input
+            name="catch_phrase"
+            placeholder="Catch phrase"
+            value={form.catch_phrase}
+            onChange={handleChange}
+          />
 
-      <input
-        name="catch_phrase"
-        placeholder="Catch phrase"
-        value={form.catch_phrase}
-        onChange={handleChange}
-      />
+          <input
+            name="superpowers"
+            placeholder="Superpowers (comma separated)"
+            value={form.superpowers}
+            onChange={handleChange}
+            required
+          />
 
-      <input
-        name="superpowers"
-        placeholder="Superpowers (comma separated)"
-        value={form.superpowers}
-        onChange={handleChange}
-        required
-      />
+          <input
+            type="file"
+            multiple
+            accept="image/*"
+            onChange={handleImages}
+          />
 
-      <input type="file" multiple accept="image/*" onChange={handleImages} />
+          <button type="submit" disabled={loading}>
+            {loading ? "Creating..." : "Create Hero"}
+          </button>
 
-      <button type="submit" disabled={loading}>
-        {loading ? "Creating..." : "Create Hero"}
-      </button>
-
-      {message && <p>{message}</p>}
-    </form>
+          {message && <p>{message}</p>}
+        </div>
+      </form>
+    </div>
   );
 };
 

@@ -1,0 +1,64 @@
+.heroContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.mainDeletImg {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.deletImg {
+  position: relative;
+  border: 1px gray solid;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.deletImgbtn {
+  position: absolute;
+  bottom: 1px;
+  right: 0px;
+  width: min-content;
+  z-index: 99;
+  background-color: rgb(0, 0, 0);
+  font: bold;
+  color: rgb(253, 2, 2);
+  cursor: pointer;
+}
+
+.deletHerobtn {
+  position: absolute;
+  top: 1px;
+  right: 100px;
+  width: min-content;
+  padding-left: 25px;
+  padding-right: 25px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  z-index: 99;
+  background-color: rgb(0, 0, 0);
+  font: bold;
+  color: rgb(253, 2, 2);
+  cursor: pointer;
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  input {
+    width: 100%; /* Makes the input take the full width of its container */
+    padding: 12px 20px; /* Adds space inside the field */
+    margin: 8px 0; /* Adds space outside the field */
+    display: inline-block;
+    border: 1px solid #ccc; /* Sets a light gray border */
+    border-radius: 4px; /* Rounds the corners */
+    box-sizing: border-box; /* Ensures padding/border are included in the width */
+  }
+
+  input:focus {
+    border: 1px solid #4caf50; /* Changes border color when the input is focused */
+  }
+}

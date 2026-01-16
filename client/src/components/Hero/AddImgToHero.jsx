@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const AddImgToHero = ({ id }) => {
+const AddImgToHero = ({ id, setUpdate }) => {
   const [form, setForm] = useState({});
 
   const [images, setImages] = useState([]);
@@ -37,6 +37,7 @@ const AddImgToHero = ({ id }) => {
       setMessage("✅ img added successfully");
       setForm({});
       setImages([]);
+      setUpdate((prev) => !prev);
     } catch (err) {
       setMessage("❌ " + err.message);
     } finally {

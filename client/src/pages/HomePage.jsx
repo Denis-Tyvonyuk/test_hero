@@ -5,9 +5,11 @@ import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const navigate = useNavigate();
   return (
-    <div>
-      <div className="createHeroBtn">
-        <button onClick={() => navigate(`/form`)}>Create Hero</button>
+    <div className="home container">
+      <div>
+        <button className="createHeroBtn" onClick={() => navigate(`/form`)}>
+          Create Hero
+        </button>
       </div>
       <HeroList />
     </div>

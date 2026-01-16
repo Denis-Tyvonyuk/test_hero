@@ -1,15 +1,12 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 
-const DeleteHero = ({ id }) => {
+const DeleteImg = ({ imageId, setUpdate }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const navigate = useNavigate();
-
   const handleDelete = async () => {
     const confirmDelete = window.confirm(
-      "Are you sure you want to delete this hero?"
+      "Are you sure you want to delete this imeg?"
     );
 
     if (!confirmDelete) return;
@@ -18,14 +15,14 @@ const DeleteHero = ({ id }) => {
       setLoading(true);
       setError("");
 
-      const res = await fetch(`http://localhost:3001/heros/${id}`, {
+      const res = await fetch(`http://localhost:3001/heros/images/${imageId}`, {
         method: "DELETE",
       });
 
       if (!res.ok) {
-        throw new Error("Failed to delete hero");
+        throw new Error("Failed to delete img");
       }
-      navigate("/");
+      setUpdate((prev) => !prev);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -35,12 +32,8 @@ const DeleteHero = ({ id }) => {
 
   return (
     <div>
-      <button
-        className="deletHerobtn"
-        onClick={handleDelete}
-        disabled={loading}
-      >
-        {loading ? "Deleting..." : "Delete Hero"}
+      <button className="deletImgbtn" onClick={handleDelete} disabled={loading}>
+        {loading ? "Deleting..." : "Delete Img"}
       </button>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
@@ -48,4 +41,4 @@ const DeleteHero = ({ id }) => {
   );
 };
 
-export default DeleteHero;
+export default DeleteImg;

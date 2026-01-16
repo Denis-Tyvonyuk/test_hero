@@ -1,6 +1,8 @@
 const { Router, json } = require("express");
 const db = require("../utils/database");
 const upload = require("../middleware/uploadHeroImages");
+const fs = require("fs");
+const path = require("path");
 
 const router = Router();
 
@@ -114,7 +116,7 @@ router.get("/:id", async (req, res) => {
   }
 
   const [images] = await db.query(
-    "SELECT image FROM hero_images WHERE hero_id = ?",
+    "SELECT id, image FROM hero_images WHERE hero_id = ?",
     [heroId]
   );
 
@@ -122,7 +124,7 @@ router.get("/:id", async (req, res) => {
     hero.superpowers = JSON.parse(hero.superpowers);
   } catch {}
 
-  hero.images = images.map((img) => img.image);
+  hero.images = images.map((img) => img);
 
   res.json(hero);
 });
@@ -216,6 +218,39 @@ router.post("/:id/images", upload.array("images", 5), async (req, res) => {
       message: "Images uploaded successfully",
       images: values.map((v) => v[1]),
     });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+/**
+ * Delete /heros/images/imageId
+ */
+
+router.delete("/images/:imageId", async (req, res) => {
+  try {
+    const { imageId } = req.params;
+
+    // get image path
+    const [[image]] = await db.query(
+      "SELECT image FROM hero_images WHERE id = ?",
+      [imageId]
+    );
+
+    if (!image) {
+      return res.status(404).json({ message: "Image not found" });
+    }
+
+    // delete file from disk
+    const filePath = path.join(__dirname, "..", image.image);
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+    }
+
+    // delete db record
+    await db.query("DELETE FROM hero_images WHERE id = ?", [imageId]);
+
+    res.json({ message: "Image deleted successfully" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

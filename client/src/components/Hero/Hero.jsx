@@ -3,12 +3,15 @@ import { useParams } from "react-router-dom";
 import AddImgToHero from "./AddImgToHero";
 import EditHeroForm from "./EditHeroForm";
 import DeleteHero from "./DeleteHero";
+import DeleteImg from "./DeleteImg";
+import "./Hero.css";
 
 const Hero = () => {
   const { id } = useParams();
 
   const [hero, setHero] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [updateData, setUpdateData] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -30,14 +33,14 @@ const Hero = () => {
     };
 
     fetchHero();
-  }, [id]);
+  }, [id, updateData]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>{error}</div>;
   if (!hero) return <div>No hero data</div>;
 
   return (
-    <div>
+    <div className="heroContainer">
       <h1>{hero.nickname}</h1>
       <p>
         <strong>Real name:</strong> {hero.real_name}
@@ -52,21 +55,30 @@ const Hero = () => {
       </ul>
 
       <h3>Images</h3>
-      <div>
+      <div className="mainDeletImg">
         {hero.images?.map((img, index) => (
-          <img
-            key={index}
-            src={`http://localhost:3001${img}`}
-            alt={hero.nickname}
-            width={200}
-          />
+          <div key={index} className="deletImg">
+            <img
+              src={`http://localhost:3001${img.image}`}
+              alt={hero.nickname}
+              width={200}
+            />
+            <div>
+              <DeleteImg imageId={img.id} setUpdate={setUpdateData} />
+            </div>
+          </div>
         ))}
       </div>
       <div>
-        <AddImgToHero id={id} />
+        <AddImgToHero id={id} setUpdate={setUpdateData} />
       </div>
       <div>
-        <EditHeroForm id={id} hero={hero} />
+        <EditHeroForm
+          id={id}
+          hero={hero}
+          setUpdate={setUpdateData}
+          update={updateData}
+        />
       </div>
       <div>
         <DeleteHero id={id} />

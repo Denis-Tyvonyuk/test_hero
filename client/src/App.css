@@ -1,0 +1,34 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.home {
+  flex-direction: column;
+  gap: 25px;
+}
+
+.createHeroBtn {
+  padding: 10px 15px;
+  background-color: black;
+  color: white;
+}
+
+.createForm {
+  display: flex;
+  flex-direction: column;
+  input {
+    width: 100%; /* Makes the input take the full width of its container */
+    padding: 12px 20px; /* Adds space inside the field */
+    margin: 8px 0; /* Adds space outside the field */
+    display: inline-block;
+    border: 1px solid #ccc; /* Sets a light gray border */
+    border-radius: 4px; /* Rounds the corners */
+    box-sizing: border-box; /* Ensures padding/border are included in the width */
+  }
+
+  input:focus {
+    border: 1px solid #4caf50; /* Changes border color when the input is focused */
+  }
+}

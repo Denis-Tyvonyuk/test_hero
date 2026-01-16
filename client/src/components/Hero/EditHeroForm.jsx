@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const EditHeroForm = ({ id, hero }) => {
+const EditHeroForm = ({ id, hero, setUpdate }) => {
   const [form, setForm] = useState({
     nickname: "",
     real_name: "",
@@ -56,6 +56,7 @@ const EditHeroForm = ({ id, hero }) => {
       if (!res.ok) throw new Error("Failed to edit hero");
 
       setMessage("✅ Hero edited successfully");
+      setUpdate((prev) => !prev);
     } catch (err) {
       setMessage("❌ " + err.message);
     } finally {
@@ -68,51 +69,52 @@ const EditHeroForm = ({ id, hero }) => {
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: 500 }}>
       <h2>Edit Hero</h2>
+      <div className="editForm">
+        <input
+          name="nickname"
+          value={form.nickname}
+          onChange={handleChange}
+          placeholder="Nickname"
+          required
+        />
 
-      <input
-        name="nickname"
-        value={form.nickname}
-        onChange={handleChange}
-        placeholder="Nickname"
-        required
-      />
+        <input
+          name="real_name"
+          value={form.real_name}
+          onChange={handleChange}
+          placeholder="Real name"
+          required
+        />
 
-      <input
-        name="real_name"
-        value={form.real_name}
-        onChange={handleChange}
-        placeholder="Real name"
-        required
-      />
+        <textarea
+          name="origin_description"
+          value={form.origin_description}
+          onChange={handleChange}
+          placeholder="Origin description"
+          required
+        />
 
-      <textarea
-        name="origin_description"
-        value={form.origin_description}
-        onChange={handleChange}
-        placeholder="Origin description"
-        required
-      />
+        <input
+          name="catch_phrase"
+          value={form.catch_phrase}
+          onChange={handleChange}
+          placeholder="Catch phrase"
+        />
 
-      <input
-        name="catch_phrase"
-        value={form.catch_phrase}
-        onChange={handleChange}
-        placeholder="Catch phrase"
-      />
+        <input
+          name="superpowers"
+          value={form.superpowers}
+          onChange={handleChange}
+          placeholder="Superpowers (comma separated)"
+          required
+        />
 
-      <input
-        name="superpowers"
-        value={form.superpowers}
-        onChange={handleChange}
-        placeholder="Superpowers (comma separated)"
-        required
-      />
+        <button type="submit" disabled={loading}>
+          {loading ? "Saving..." : "Edit Hero"}
+        </button>
 
-      <button type="submit" disabled={loading}>
-        {loading ? "Saving..." : "Edit Hero"}
-      </button>
-
-      {message && <p>{message}</p>}
+        {message && <p>{message}</p>}
+      </div>
     </form>
   );
 };
